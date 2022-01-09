@@ -52,7 +52,7 @@ public class AlbumServiceImpl implements AlbumService {
                 return ServerResponseResult.responseSuccess("专辑信息添加成功", newAlbum);
             }
         }
-        return ServerResponseResult.responseErrorMessage("专辑信息添加失败");
+        return ServerResponseResult.responseErrorMessage(result.getMsg());
     }
 
     @Override
@@ -82,8 +82,9 @@ public class AlbumServiceImpl implements AlbumService {
             if (updateResult == 1) {
                 return ServerResponseResult.responseSuccess("专辑信息修改成功", modifiedAlbum);
             }
+            return ServerResponseResult.responseErrorMessage("修改时发生未知错误");
         }
-        return ServerResponseResult.responseErrorMessage("专辑信息修改失败");
+        return ServerResponseResult.responseErrorMessage(result.getMsg());
     }
 
     // 抽离部分逻辑

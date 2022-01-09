@@ -18,7 +18,7 @@ public interface ArtistMapper {
     Artist selectByPrimaryKey(Integer id);
 
     // 根据姓名查询艺人
-    Artist checkByName(String name);
+    Artist checkByName(@Param("name") String name);
 
     // 艺人多条件模糊查询
     List<Artist> query(@Param("artist") Artist artist);

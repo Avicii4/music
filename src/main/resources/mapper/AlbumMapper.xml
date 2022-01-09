@@ -45,8 +45,11 @@
         LEFT JOIN artist t
         ON m.artist_id = t.id
         <where>
+            <if test="dto.id != null">
+                m.id = #{dto.id}
+            </if>
             <if test="dto.name != null and dto.name != ''">
-                m.name LIKE CONCAT('%',#{dto.name},'%')
+                AND m.name LIKE CONCAT('%',#{dto.name},'%')
             </if>
             <if test="dto.artistName != null and dto.artistName != ''">
                 AND t.name LIKE CONCAT('%',#{dto.artistName},'%')

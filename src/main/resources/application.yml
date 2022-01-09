@@ -15,3 +15,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   type-aliases-package: indi/harry/music/entity
+
+logging:
+  level:
+    indi.harry.music.mapper: debug
