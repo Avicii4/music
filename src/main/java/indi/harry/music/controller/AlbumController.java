@@ -41,4 +41,27 @@ public class AlbumController {
     public ServerResponseResult<Album> add(@RequestBody AlbumInfoDTO albumInfoDTO) {
         return albumService.add(albumInfoDTO);
     }
+
+    /**
+     * 专辑信息删除
+     *
+     * @param albumInfoDTO 删除入参
+     * @return 删除成功/失败结果
+     */
+    @PostMapping("delete")
+    public ServerResponseResult<Boolean> delete(@RequestBody AlbumInfoDTO albumInfoDTO) {
+        return albumService.delete(albumInfoDTO);
+    }
+
+    /**
+     * 专辑信息修改
+     *
+     * @param albumInfoDTO 修改入参
+     * @return 修改结果
+     */
+    @PostMapping("modify")
+    public ServerResponseResult<Album> modify(@RequestBody AlbumInfoDTO albumInfoDTO) {
+        return albumService.modify(albumInfoDTO);
+    }
+
 }

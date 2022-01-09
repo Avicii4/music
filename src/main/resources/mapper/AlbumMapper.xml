@@ -27,9 +27,15 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="queryIdByName" parameterType="java.lang.String" resultType="int">
+        select id from album
+        where name = #{name,jdbcType=VARCHAR}
+    </select>
+
     <select id="query" parameterType="indi.harry.music.entity.DTO.AlbumInfoDTO"
             resultMap="QueryResultMap">
         SELECT
+        m.id,
         m.name,
         t.name as t_name,
         m.genre,
@@ -61,6 +67,7 @@
         delete from album
         where id = #{id,jdbcType=INTEGER}
     </delete>
+
     <insert id="insert" parameterType="indi.harry.music.entity.Album">
         insert into album (id, name, artist_id,
         genre, year, publisher

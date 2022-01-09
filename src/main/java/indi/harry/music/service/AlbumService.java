@@ -16,4 +16,10 @@ public interface AlbumService {
 
     // 专辑信息添加
     ServerResponseResult<Album> add(AlbumInfoDTO albumInfoDTO);
+
+    // 专辑删除
+    ServerResponseResult<Boolean> delete(AlbumInfoDTO albumInfoDTO);
+
+    // 专辑信息修改
+    ServerResponseResult<Album> modify(AlbumInfoDTO albumInfoDTO);
 }

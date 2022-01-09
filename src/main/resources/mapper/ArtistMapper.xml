@@ -22,6 +22,24 @@
     from artist
     where name = #{name,jdbcType=VARCHAR}
   </select>
+
+  <select id="query" parameterType="indi.harry.music.entity.Artist" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM artist
+    <where>
+      <if test="artist.name != null and artist.name != ''">
+        name LIKE CONCAT('%',#{artist.name},'%')
+      </if>
+      <if test="artist.region != null and artist.region != ''">
+        AND region LIKE CONCAT('%',artist.region,'%')
+      </if>
+      <if test="artist.birthday != null">
+        AND birthday = #{artist.birthday}
+      </if>
+    </where>
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from artist
     where id = #{id,jdbcType=INTEGER}

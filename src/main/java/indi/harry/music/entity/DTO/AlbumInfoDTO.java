@@ -6,6 +6,9 @@ package indi.harry.music.entity.DTO;
  */
 public class AlbumInfoDTO {
 
+    // 专辑ID
+    private Integer id;
+
     // 专辑名称
     private String name;
 
@@ -20,6 +23,14 @@ public class AlbumInfoDTO {
 
     // 发行商
     private String publisher;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
