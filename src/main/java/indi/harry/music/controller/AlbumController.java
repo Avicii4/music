@@ -3,6 +3,7 @@ package indi.harry.music.controller;
 import indi.harry.music.common.ServerResponseResult;
 import indi.harry.music.entity.Album;
 import indi.harry.music.entity.DTO.AlbumInfoDTO;
+import indi.harry.music.entity.DTO.AlbumQueryDTO;
 import indi.harry.music.service.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,12 @@ public class AlbumController {
     /**
      * 多条件模糊查询专辑信息
      *
-     * @param albumInfoDTO 查询入参
+     * @param albumQueryDTO 查询入参
      * @return 查询结果
      */
     @GetMapping("list")
-    public ServerResponseResult<List<AlbumInfoDTO>> list(@RequestBody AlbumInfoDTO albumInfoDTO) {
-        return albumService.list(albumInfoDTO);
+    public ServerResponseResult<List<AlbumInfoDTO>> list(@RequestBody AlbumQueryDTO albumQueryDTO) {
+        return albumService.list(albumQueryDTO);
     }
 
     /**

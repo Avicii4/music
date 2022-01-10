@@ -32,7 +32,7 @@
         where name = #{name,jdbcType=VARCHAR}
     </select>
 
-    <select id="query" parameterType="indi.harry.music.entity.DTO.AlbumInfoDTO"
+    <select id="query" parameterType="indi.harry.music.entity.DTO.AlbumQueryDTO"
             resultMap="QueryResultMap">
         SELECT
         m.id,
@@ -57,8 +57,11 @@
             <if test="dto.genre != null and dto.genre != ''">
                 AND m.genre LIKE CONCAT('%',#{dto.genre},'%')
             </if>
-            <if test="dto.year != null">
-                AND m.year = #{dto.year}
+            <if test="dto.startYear != null">
+                AND m.year &gt;= #{dto.startYear}
+            </if>
+            <if test="dto.endYear != null">
+                AND m.year &lt;= #{dto.endYear}
             </if>
             <if test="dto.publisher != null and dto.publisher !=''">
                 AND m.publisher LIKE CONCAT('%',#{dto.publisher},'%')

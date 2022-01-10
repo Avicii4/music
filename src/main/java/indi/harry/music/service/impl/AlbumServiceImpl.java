@@ -1,9 +1,11 @@
 package indi.harry.music.service.impl;
 
+import indi.harry.music.common.ResponseCode;
 import indi.harry.music.common.ServerResponseResult;
 import indi.harry.music.entity.Album;
 import indi.harry.music.entity.Artist;
 import indi.harry.music.entity.DTO.AlbumInfoDTO;
+import indi.harry.music.entity.DTO.AlbumQueryDTO;
 import indi.harry.music.mapper.AlbumMapper;
 import indi.harry.music.mapper.ArtistMapper;
 import indi.harry.music.service.AlbumService;
@@ -27,20 +29,21 @@ public class AlbumServiceImpl implements AlbumService {
     private ArtistMapper artistMapper;
 
     @Override
-    public ServerResponseResult<List<AlbumInfoDTO>> list(AlbumInfoDTO albumInfoDTO) {
-        List<AlbumInfoDTO> resultDTOList = albumMapper.query(albumInfoDTO);
+    public ServerResponseResult<List<AlbumInfoDTO>> list(AlbumQueryDTO queryDTO) {
+        List<AlbumInfoDTO> resultDTOList = albumMapper.query(queryDTO);
         if (CollectionUtils.isEmpty(resultDTOList)) {
-            return ServerResponseResult.responseSuccessMessage("没有找到符合的结果");
+            return ServerResponseResult.responseSuccessMessage(ResponseCode.NO_QUERY_RESULT);
         } else {
-            return ServerResponseResult.responseSuccess("查询成功", resultDTOList);
+            return ServerResponseResult.responseSuccess(ResponseCode.QUERY_SUCCESS, resultDTOList);
         }
     }
 
     @Override
     public ServerResponseResult<Album> add(AlbumInfoDTO albumInfoDTO) {
         Artist artist = artistMapper.checkByName(albumInfoDTO.getArtistName());
-        ServerResponseResult result = checkParam(albumInfoDTO, artist);
-        if (result.isSuccessful()) {
+        ResponseCode result = checkParam(albumInfoDTO, artist);
+        // 校验通过
+        if (result.getCode() == ResponseCode.SUCCESS.getCode()) {
             Album newAlbum = new Album();
             newAlbum.setName(albumInfoDTO.getName());
             newAlbum.setArtistId(artist.getId());
@@ -49,28 +52,33 @@ public class AlbumServiceImpl implements AlbumService {
             newAlbum.setPublisher(albumInfoDTO.getPublisher());
             int insertResult = albumMapper.insertSelective(newAlbum);
             if (insertResult == 1) {
-                return ServerResponseResult.responseSuccess("专辑信息添加成功", newAlbum);
+                return ServerResponseResult.responseSuccess(ResponseCode.ALBUM_ADD_SUCCESS, newAlbum);
+            } else {
+                return ServerResponseResult.responseErrorMessage(ResponseCode.ALBUM_ADD_FAIL);
             }
         }
-        return ServerResponseResult.responseErrorMessage(result.getMsg());
+        // 否则返回校验错误的信息
+        return ServerResponseResult.responseErrorMessage(result);
     }
 
     @Override
     public ServerResponseResult<Boolean> delete(AlbumInfoDTO albumInfoDTO) {
-        List<AlbumInfoDTO> resultDTOList = albumMapper.query(albumInfoDTO);
+        AlbumQueryDTO queryDTO = new AlbumQueryDTO();
+        queryDTO.setId(albumInfoDTO.getId());
+        List<AlbumInfoDTO> resultDTOList = albumMapper.query(queryDTO);
         if (resultDTOList.size() == 1) { // 仅当查询得到一个结果时才进行删除
             albumMapper.deleteByPrimaryKey(resultDTOList.get(0).getId());
-            return ServerResponseResult.responseSuccess("专辑信息删除成功", true);
+            return ServerResponseResult.responseSuccess(ResponseCode.ALBUM_DELETE_SUCCESS, true);
         } else {
-            return ServerResponseResult.responseErrorMessage("专辑信息删除失败");
+            return ServerResponseResult.responseErrorMessage(ResponseCode.ALBUM_DELETE_FAIL);
         }
     }
 
     @Override
     public ServerResponseResult<Album> modify(AlbumInfoDTO albumInfoDTO) {
         Artist artist = artistMapper.checkByName(albumInfoDTO.getArtistName());
-        ServerResponseResult result = checkParam(albumInfoDTO, artist);
-        if (result.isSuccessful()) {
+        ResponseCode result = checkParam(albumInfoDTO, artist);
+        if (result.getCode() == ResponseCode.SUCCESS.getCode()) {
             Album modifiedAlbum = new Album();
             modifiedAlbum.setId(albumInfoDTO.getId());
             modifiedAlbum.setName(albumInfoDTO.getName());
@@ -80,24 +88,24 @@ public class AlbumServiceImpl implements AlbumService {
             modifiedAlbum.setPublisher(albumInfoDTO.getPublisher());
             int updateResult = albumMapper.updateByPrimaryKeySelective(modifiedAlbum);
             if (updateResult == 1) {
-                return ServerResponseResult.responseSuccess("专辑信息修改成功", modifiedAlbum);
+                return ServerResponseResult.responseSuccess(ResponseCode.ALBUM_MODIFY_SUCCESS, modifiedAlbum);
             }
-            return ServerResponseResult.responseErrorMessage("修改时发生未知错误");
+            return ServerResponseResult.responseErrorMessage(ResponseCode.ALBUM_MODIFY_FAIL);
         }
-        return ServerResponseResult.responseErrorMessage(result.getMsg());
+        return ServerResponseResult.responseErrorMessage(result);
     }
 
     // 抽离部分逻辑
-    private ServerResponseResult<AlbumInfoDTO> checkParam(AlbumInfoDTO albumInfoDTO, Artist artist) {
+    private ResponseCode checkParam(AlbumInfoDTO albumInfoDTO, Artist artist) {
         if (StringUtils.isBlank(albumInfoDTO.getName())) {
-            return ServerResponseResult.responseErrorMessage("专辑名称不能为空");
+            return ResponseCode.ALBUM_NAME_BLANK;
         } else if (StringUtils.isBlank(albumInfoDTO.getArtistName())) {
-            return ServerResponseResult.responseErrorMessage("艺人名称不能为空");
+            return ResponseCode.ARTIST_NAME_BLANK;
         }
         if (artist == null) {
-            return ServerResponseResult.responseErrorMessage("关联艺人不存在，请重新输入");
+            return ResponseCode.ARTIST_UNKNOWN;
         }
-        return ServerResponseResult.responseSuccess();
+        return ResponseCode.SUCCESS;
     }
 
 }

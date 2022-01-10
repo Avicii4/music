@@ -3,6 +3,7 @@ package indi.harry.music.service;
 import indi.harry.music.common.ServerResponseResult;
 import indi.harry.music.entity.Album;
 import indi.harry.music.entity.DTO.AlbumInfoDTO;
+import indi.harry.music.entity.DTO.AlbumQueryDTO;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public interface AlbumService {
 
     // 专辑信息条件搜索展示
-    ServerResponseResult<List<AlbumInfoDTO>> list(AlbumInfoDTO albumInfoDTO);
+    ServerResponseResult<List<AlbumInfoDTO>> list(AlbumQueryDTO albumQueryDTO);
 
     // 专辑信息添加
     ServerResponseResult<Album> add(AlbumInfoDTO albumInfoDTO);

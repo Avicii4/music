@@ -2,6 +2,7 @@ package indi.harry.music.mapper;
 
 import indi.harry.music.entity.Album;
 import indi.harry.music.entity.DTO.AlbumInfoDTO;
+import indi.harry.music.entity.DTO.AlbumQueryDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,7 +24,7 @@ public interface AlbumMapper {
     int queryIdByName(String name);
 
     // 多条件模糊查询专辑信息
-    List<AlbumInfoDTO> query(@Param("dto") AlbumInfoDTO albumInfoDTO);
+    List<AlbumInfoDTO> query(@Param("dto") AlbumQueryDTO albumQueryDTO);
 
     int updateByPrimaryKeySelective(Album record);
 
