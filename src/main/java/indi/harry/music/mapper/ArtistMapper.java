@@ -1,6 +1,7 @@
 package indi.harry.music.mapper;
 
 import indi.harry.music.entity.Artist;
+import indi.harry.music.entity.DTO.ArtistInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,7 +22,7 @@ public interface ArtistMapper {
     Artist checkByName(@Param("name") String name);
 
     // 艺人多条件模糊查询
-    List<Artist> query(@Param("artist") Artist artist);
+    List<Artist> query(@Param("dto") ArtistInfoDTO artistInfoDTO);
 
     int updateByPrimaryKeySelective(Artist record);
 

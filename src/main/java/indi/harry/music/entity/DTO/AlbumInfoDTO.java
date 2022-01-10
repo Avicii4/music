@@ -1,7 +1,7 @@
 package indi.harry.music.entity.DTO;
 
 /**
- * 音乐专辑信息展示
+ * 音乐专辑信息入参与出参
  * Created by Avicii4 at 2022/1/7.
  */
 public class AlbumInfoDTO {

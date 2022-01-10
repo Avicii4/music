@@ -3,6 +3,7 @@ package indi.harry.music.service.impl;
 import indi.harry.music.common.ServerResponseResult;
 import indi.harry.music.entity.Artist;
 import indi.harry.music.entity.DTO.AlbumInfoDTO;
+import indi.harry.music.entity.DTO.ArtistInfoDTO;
 import indi.harry.music.mapper.AlbumMapper;
 import indi.harry.music.mapper.ArtistMapper;
 import indi.harry.music.service.ArtistService;
@@ -25,17 +26,18 @@ public class ArtistServiceImpl implements ArtistService {
     @Autowired
     private AlbumMapper albumMapper;
 
+    // TODO 出参不变，入参改为开始和结束生日时间
     @Override
-    public ServerResponseResult<List<Artist>> list(Artist artist) {
-        List<Artist> queryResult = artistMapper.query(artist);
+    public ServerResponseResult<List<Artist>> list(ArtistInfoDTO artistInfoDTO) {
+        List<Artist> queryResult = artistMapper.query(artistInfoDTO);
         if (CollectionUtils.isEmpty(queryResult)) {
             return ServerResponseResult.responseSuccessMessage("没有找到符合的结果");
         } else {
             return ServerResponseResult.responseSuccess("查询成功", queryResult);
         }
-
     }
 
+    // TODO 入参的生日字段
     @Override
     public ServerResponseResult<Artist> add(Artist artist) {
         if (StringUtils.isBlank(artist.getName())) {
@@ -70,6 +72,7 @@ public class ArtistServiceImpl implements ArtistService {
         return ServerResponseResult.responseSuccess("删除艺人信息成功", true);
     }
 
+    // TODO 入参的日期
     @Override
     public ServerResponseResult<Artist> modify(Artist artist) {
         Artist checkArtist = artistMapper.selectByPrimaryKey(artist.getId());

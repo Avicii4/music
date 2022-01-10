@@ -23,19 +23,22 @@
     where name = #{name,jdbcType=VARCHAR}
   </select>
 
-  <select id="query" parameterType="indi.harry.music.entity.Artist" resultMap="BaseResultMap">
+  <select id="query" parameterType="indi.harry.music.entity.DTO.ArtistInfoDTO" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
     FROM artist
     <where>
-      <if test="artist.name != null and artist.name != ''">
-        name LIKE CONCAT('%',#{artist.name},'%')
+      <if test="dto.name != null and dto.name != ''">
+        name LIKE CONCAT('%',#{dto.name},'%')
       </if>
-      <if test="artist.region != null and artist.region != ''">
-        AND region LIKE CONCAT('%',artist.region,'%')
+      <if test="dto.region != null and dto.region != ''">
+        AND region LIKE CONCAT('%',dto.region,'%')
       </if>
-      <if test="artist.birthday != null">
-        AND birthday = #{artist.birthday}
+      <if test="dto.startTime != null">
+        AND birthday &gt;= #{dto.startTime}
+      </if>
+      <if test="dto.endTime != null">
+        AND birthday &lt;= #{dto.endTime}
       </if>
     </where>
   </select>

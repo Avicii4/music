@@ -2,6 +2,7 @@ package indi.harry.music.controller;
 
 import indi.harry.music.common.ServerResponseResult;
 import indi.harry.music.entity.Artist;
+import indi.harry.music.entity.DTO.ArtistInfoDTO;
 import indi.harry.music.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,12 @@ public class ArtistController {
     /**
      * 艺人信息查询
      *
-     * @param artist 查询参数
+     * @param artistInfoDTO 查询参数
      * @return 查询结果
      */
     @GetMapping("list")
-    public ServerResponseResult<List<Artist>> list(@RequestBody Artist artist) {
-        return artistService.list(artist);
+    public ServerResponseResult<List<Artist>> list(@RequestBody ArtistInfoDTO artistInfoDTO) {
+        return artistService.list(artistInfoDTO);
     }
 
     /**
